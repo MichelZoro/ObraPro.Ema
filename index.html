@@ -23,7 +23,9 @@
 <body>
 
 
-<!-- ================= ACCESO ================= -->
+<!-- ==========================================
+     PANTALLA DE ACCESO
+========================================== -->
 
 <div
     id="pantallaAcceso"
@@ -46,11 +48,11 @@
 
         <p>
             Control de obras,
-            empleados y pagos.
+            empleados y presupuestos.
         </p>
 
 
-        <!-- CREAR CÓDIGO -->
+        <!-- PRIMER INGRESO -->
 
         <div
             id="configurarCodigo"
@@ -62,31 +64,28 @@
             </h3>
 
             <p>
-                Este código será utilizado
-                por Emanuel para entrar
-                a la aplicación.
+                Creá un código personal
+                para proteger la aplicación.
             </p>
 
             <input
                 id="nuevoCodigo"
                 type="password"
                 inputmode="numeric"
-                placeholder="Crear código"
+                placeholder="Código de 4 o más números"
             >
 
             <button
                 class="boton-principal boton-completo"
                 onclick="crearCodigo()"
             >
-
                 Crear código
-
             </button>
 
         </div>
 
 
-        <!-- INGRESAR -->
+        <!-- INGRESO NORMAL -->
 
         <div
             id="ingresarCodigo"
@@ -116,9 +115,7 @@
                 class="boton-principal boton-completo"
                 onclick="entrarApp()"
             >
-
                 Entrar
-
             </button>
 
             <p
@@ -134,7 +131,9 @@
 
 
 
-<!-- ================= CONTENIDO APP ================= -->
+<!-- ==========================================
+     APLICACIÓN
+========================================== -->
 
 <div
     id="contenidoApp"
@@ -142,757 +141,957 @@
 >
 
 
-    <!-- ================= ENCABEZADO ================= -->
+<header class="topbar">
 
-    <header class="topbar">
+    <div>
+
+        <h1>
+            Gestor
+        </h1>
+
+        <span>
+            Control de obras
+        </span>
+
+    </div>
+
+    <button
+        class="menu-btn"
+        onclick="toggleMenu()"
+    >
+        ☰
+    </button>
+
+</header>
+
+
+
+<!-- ==========================================
+     MENÚ
+========================================== -->
+
+<nav
+    id="menu"
+    class="menu"
+>
+
+    <button
+        onclick="mostrarSeccion('inicio')"
+    >
+        🏠 Inicio
+    </button>
+
+    <button
+        onclick="mostrarSeccion('empleados')"
+    >
+        👷 Empleados
+    </button>
+
+    <button
+        onclick="mostrarSeccion('obras')"
+    >
+        🏗️ Obras
+    </button>
+
+    <button
+        onclick="mostrarSeccion('horas')"
+    >
+        ⏱️ Horas
+    </button>
+
+    <button
+        onclick="mostrarSeccion('pagos')"
+    >
+        💰 Pagos
+    </button>
+
+    <button
+        onclick="mostrarSeccion('presupuestos')"
+    >
+        🧮 Presupuestos
+    </button>
+
+    <hr>
+
+    <button
+        onclick="cambiarCodigo()"
+    >
+        ⚙️ Configuración
+    </button>
+
+    <button
+        onclick="bloquearApp()"
+    >
+        🚪 Salir
+    </button>
+
+</nav>
+
+
+
+<main>
+
+
+<!-- ==========================================
+     INICIO
+========================================== -->
+
+<section
+    id="inicio"
+    class="seccion activa"
+>
+
+    <div class="bienvenida">
+
+        <p class="pequeno">
+            PANEL PRINCIPAL
+        </p>
+
+        <h2>
+            ¡Hola, Emanuel! 👋
+        </h2>
+
+        <p>
+            Bienvenido nuevamente.
+            ¿Qué vamos a organizar hoy?
+        </p>
+
+    </div>
+
+
+    <div class="tarjetas">
+
+        <div class="tarjeta">
+
+            <span class="icono">
+                👷
+            </span>
+
+            <div>
+
+                <small>
+                    Empleados
+                </small>
+
+                <strong
+                    id="totalEmpleados"
+                >
+                    0
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <div class="tarjeta">
+
+            <span class="icono">
+                🏗️
+            </span>
+
+            <div>
+
+                <small>
+                    Obras activas
+                </small>
+
+                <strong
+                    id="totalObras"
+                >
+                    0
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <div class="tarjeta">
+
+            <span class="icono">
+                ⏱️
+            </span>
+
+            <div>
+
+                <small>
+                    Horas registradas
+                </small>
+
+                <strong
+                    id="totalHoras"
+                >
+                    0
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <div class="tarjeta">
+
+            <span class="icono">
+                🧮
+            </span>
+
+            <div>
+
+                <small>
+                    Presupuestos
+                </small>
+
+                <strong>
+                    +
+                </strong>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="panel">
+
+        <div class="panel-titulo">
+
+            <h3>
+                Resumen
+            </h3>
+
+        </div>
+
+        <div
+            id="resumenInicio"
+            class="resumen"
+        >
+            Todavía no hay información cargada.
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- ==========================================
+     EMPLEADOS
+========================================== -->
+
+<section
+    id="empleados"
+    class="seccion"
+>
+
+    <div class="seccion-header">
 
         <div>
 
-            <h1>
-                Gestor
-            </h1>
+            <p class="pequeno">
+                PERSONAL
+            </p>
 
-            <span>
-                Control de obras
-            </span>
+            <h2>
+                Empleados
+            </h2>
 
         </div>
 
-
         <button
-            class="menu-btn"
-            onclick="toggleMenu()"
+            class="boton-principal"
+            onclick="abrirModalEmpleado()"
         >
-
-            ☰
-
+            + Agregar
         </button>
-
-    </header>
-
-
-
-    <!-- ================= MENÚ ================= -->
-
-    <nav
-        id="menu"
-        class="menu"
-    >
-
-        <button
-            onclick="mostrarSeccion('inicio')"
-        >
-            🏠 Inicio
-        </button>
-
-
-        <button
-            onclick="mostrarSeccion('empleados')"
-        >
-            👷 Empleados
-        </button>
-
-
-        <button
-            onclick="mostrarSeccion('obras')"
-        >
-            🏗️ Obras
-        </button>
-
-
-        <button
-            onclick="mostrarSeccion('horas')"
-        >
-            ⏱️ Horas
-        </button>
-
-
-        <button
-            onclick="mostrarSeccion('pagos')"
-        >
-            💰 Pagos
-        </button>
-
-
-        <button
-            onclick="cambiarCodigo()"
-        >
-            🔐 Cambiar código
-        </button>
-
-
-        <button
-            onclick="bloquearApp()"
-        >
-            🚪 Salir
-        </button>
-
-    </nav>
-
-
-
-    <main>
-
-
-        <!-- ================= INICIO ================= -->
-
-        <section
-            id="inicio"
-            class="seccion activa"
-        >
-
-            <div class="bienvenida">
-
-                <p class="pequeno">
-                    PANEL PRINCIPAL
-                </p>
-
-                <h2>
-                    ¡Hola, Emanuel! 👋
-                </h2>
-
-                <p>
-                    Bienvenido nuevamente.
-                    ¿Qué vamos a organizar hoy?
-                </p>
-
-            </div>
-
-
-            <div class="tarjetas">
-
-
-                <div class="tarjeta">
-
-                    <span class="icono">
-                        👷
-                    </span>
-
-                    <div>
-
-                        <small>
-                            Empleados
-                        </small>
-
-                        <strong id="totalEmpleados">
-                            0
-                        </strong>
-
-                    </div>
-
-                </div>
-
-
-
-                <div class="tarjeta">
-
-                    <span class="icono">
-                        🏗️
-                    </span>
-
-                    <div>
-
-                        <small>
-                            Obras activas
-                        </small>
-
-                        <strong id="totalObras">
-                            0
-                        </strong>
-
-                    </div>
-
-                </div>
-
-
-
-                <div class="tarjeta">
-
-                    <span class="icono">
-                        ⏱️
-                    </span>
-
-                    <div>
-
-                        <small>
-                            Horas registradas
-                        </small>
-
-                        <strong id="totalHoras">
-                            0
-                        </strong>
-
-                    </div>
-
-                </div>
-
-
-
-                <div class="tarjeta">
-
-                    <span class="icono">
-                        💰
-                    </span>
-
-                    <div>
-
-                        <small>
-                            Pagos registrados
-                        </small>
-
-                        <strong id="totalPagos">
-                            0
-                        </strong>
-
-                    </div>
-
-                </div>
-
-
-            </div>
-
-
-
-            <div class="panel">
-
-                <div class="panel-titulo">
-
-                    <h3>
-                        Resumen
-                    </h3>
-
-                </div>
-
-                <div
-                    id="resumenInicio"
-                    class="resumen"
-                >
-                    Todavía no hay información cargada.
-                </div>
-
-            </div>
-
-        </section>
-
-
-
-        <!-- ================= EMPLEADOS ================= -->
-
-        <section
-            id="empleados"
-            class="seccion"
-        >
-
-            <div class="seccion-header">
-
-                <div>
-
-                    <p class="pequeno">
-                        PERSONAL
-                    </p>
-
-                    <h2>
-                        Empleados
-                    </h2>
-
-                </div>
-
-
-                <button
-                    class="boton-principal"
-                    onclick="abrirModalEmpleado()"
-                >
-                    + Agregar
-                </button>
-
-            </div>
-
-
-            <div
-                id="listaEmpleados"
-                class="lista"
-            >
-            </div>
-
-        </section>
-
-
-
-        <!-- ================= OBRAS ================= -->
-
-        <section
-            id="obras"
-            class="seccion"
-        >
-
-            <div class="seccion-header">
-
-                <div>
-
-                    <p class="pequeno">
-                        PROYECTOS
-                    </p>
-
-                    <h2>
-                        Obras
-                    </h2>
-
-                </div>
-
-
-                <button
-                    class="boton-principal"
-                    onclick="abrirModalObra()"
-                >
-                    + Agregar
-                </button>
-
-            </div>
-
-
-            <div
-                id="listaObras"
-                class="lista"
-            >
-            </div>
-
-        </section>
-
-
-
-        <!-- ================= HORAS ================= -->
-
-        <section
-            id="horas"
-            class="seccion"
-        >
-
-            <div class="seccion-header">
-
-                <div>
-
-                    <p class="pequeno">
-                        CONTROL
-                    </p>
-
-                    <h2>
-                        Horas trabajadas
-                    </h2>
-
-                </div>
-
-
-                <button
-                    class="boton-principal"
-                    onclick="abrirModalHoras()"
-                >
-                    + Registrar
-                </button>
-
-            </div>
-
-
-            <div
-                id="listaHoras"
-                class="lista"
-            >
-            </div>
-
-        </section>
-
-
-
-        <!-- ================= PAGOS ================= -->
-
-        <section
-            id="pagos"
-            class="seccion"
-        >
-
-            <div class="seccion-header">
-
-                <div>
-
-                    <p class="pequeno">
-                        ADMINISTRACIÓN
-                    </p>
-
-                    <h2>
-                        Pagos
-                    </h2>
-
-                </div>
-
-
-                <button
-                    class="boton-principal"
-                    onclick="abrirModalPago()"
-                >
-                    + Registrar
-                </button>
-
-            </div>
-
-
-            <div
-                id="listaPagos"
-                class="lista"
-            >
-            </div>
-
-        </section>
-
-
-    </main>
-
-
-
-    <!-- ================= MODAL EMPLEADO ================= -->
-
-    <div
-        id="modalEmpleado"
-        class="modal"
-    >
-
-        <div class="modal-contenido">
-
-            <div class="modal-header">
-
-                <h3 id="tituloModalEmpleado">
-                    Nuevo empleado
-                </h3>
-
-                <button
-                    onclick="
-                        cerrarModal('modalEmpleado')
-                    "
-                >
-                    ×
-                </button>
-
-            </div>
-
-
-            <input
-                id="idEmpleadoEditar"
-                type="hidden"
-            >
-
-
-            <input
-                id="nombreEmpleado"
-                type="text"
-                placeholder="Nombre y apellido"
-            >
-
-
-            <input
-                id="puestoEmpleado"
-                type="text"
-                placeholder="Puesto / oficio"
-            >
-
-
-            <input
-                id="telefonoEmpleado"
-                type="tel"
-                placeholder="Teléfono"
-            >
-
-
-            <input
-                id="valorEmpleado"
-                type="number"
-                placeholder="Valor diario"
-            >
-
-
-            <div class="dias-trabajo">
-
-                <h4>
-                    Días de trabajo
-                </h4>
-
-                <label>
-                    <input
-                        type="checkbox"
-                        id="diaLunes"
-                    >
-                    Lunes
-                </label>
-
-
-                <label>
-                    <input
-                        type="checkbox"
-                        id="diaMartes"
-                    >
-                    Martes
-                </label>
-
-
-                <label>
-                    <input
-                        type="checkbox"
-                        id="diaMiércoles"
-                    >
-                    Miércoles
-                </label>
-
-
-                <label>
-                    <input
-                        type="checkbox"
-                        id="diaJueves"
-                    >
-                    Jueves
-                </label>
-
-
-                <label>
-                    <input
-                        type="checkbox"
-                        id="diaViernes"
-                    >
-                    Viernes
-                </label>
-
-
-                <label>
-                    <input
-                        type="checkbox"
-                        id="diaSábado"
-                    >
-                    Sábado
-                </label>
-
-            </div>
-
-
-            <button
-                class="boton-principal boton-completo"
-                onclick="guardarEmpleado()"
-            >
-
-                Guardar empleado
-
-            </button>
-
-        </div>
 
     </div>
 
 
-
-    <!-- ================= MODAL OBRA ================= -->
-
     <div
-        id="modalObra"
-        class="modal"
+        id="listaEmpleados"
+        class="lista"
     >
+    </div>
 
-        <div class="modal-contenido">
-
-            <div class="modal-header">
-
-                <h3>
-                    Nueva obra
-                </h3>
-
-                <button
-                    onclick="
-                        cerrarModal('modalObra')
-                    "
-                >
-                    ×
-                </button>
-
-            </div>
+</section>
 
 
-            <input
-                id="nombreObra"
-                type="text"
-                placeholder="Nombre de la obra"
-            >
 
+<!-- ==========================================
+     OBRAS
+========================================== -->
 
-            <input
-                id="direccionObra"
-                type="text"
-                placeholder="Dirección"
-            >
+<section
+    id="obras"
+    class="seccion"
+>
 
+    <div class="seccion-header">
 
-            <input
-                id="clienteObra"
-                type="text"
-                placeholder="Cliente"
-            >
+        <div>
 
+            <p class="pequeno">
+                PROYECTOS
+            </p>
 
-            <button
-                class="boton-principal boton-completo"
-                onclick="guardarObra()"
-            >
-
-                Guardar obra
-
-            </button>
+            <h2>
+                Obras
+            </h2>
 
         </div>
+
+        <button
+            class="boton-principal"
+            onclick="abrirModalObra()"
+        >
+            + Agregar
+        </button>
 
     </div>
 
 
-
-    <!-- ================= MODAL HORAS ================= -->
-
     <div
-        id="modalHoras"
-        class="modal"
+        id="listaObras"
+        class="lista"
     >
+    </div>
 
-        <div class="modal-contenido">
-
-            <div class="modal-header">
-
-                <h3>
-                    Registrar horas
-                </h3>
-
-                <button
-                    onclick="
-                        cerrarModal('modalHoras')
-                    "
-                >
-                    ×
-                </button>
-
-            </div>
+</section>
 
 
-            <select id="empleadoHoras">
 
-                <option value="">
-                    Seleccionar empleado
-                </option>
+<!-- ==========================================
+     HORAS
+========================================== -->
 
-            </select>
+<section
+    id="horas"
+    class="seccion"
+>
 
+    <div class="seccion-header">
 
-            <select id="obraHoras">
+        <div>
 
-                <option value="">
-                    Seleccionar obra
-                </option>
+            <p class="pequeno">
+                CONTROL
+            </p>
 
-            </select>
-
-
-            <input
-                id="fechaHoras"
-                type="date"
-            >
-
-
-            <input
-                id="cantidadHoras"
-                type="number"
-                placeholder="Cantidad de horas"
-                min="0"
-                step="0.5"
-            >
-
-
-            <button
-                class="boton-principal boton-completo"
-                onclick="guardarHoras()"
-            >
-
-                Registrar horas
-
-            </button>
+            <h2>
+                Horas trabajadas
+            </h2>
 
         </div>
+
+        <button
+            class="boton-principal"
+            onclick="abrirModalHoras()"
+        >
+            + Registrar
+        </button>
 
     </div>
 
 
+    <div
+        id="listaHoras"
+        class="lista"
+    >
+    </div>
 
-    <!-- ================= MODAL PAGO ================= -->
+</section>
+
+
+
+<!-- ==========================================
+     PAGOS
+========================================== -->
+
+<section
+    id="pagos"
+    class="seccion"
+>
+
+    <div class="seccion-header">
+
+        <div>
+
+            <p class="pequeno">
+                ADMINISTRACIÓN
+            </p>
+
+            <h2>
+                Pagos
+            </h2>
+
+        </div>
+
+        <button
+            class="boton-principal"
+            onclick="abrirModalPago()"
+        >
+            + Registrar
+        </button>
+
+    </div>
+
 
     <div
-        id="modalPago"
-        class="modal"
+        id="listaPagos"
+        class="lista"
     >
+    </div>
 
-        <div class="modal-contenido">
-
-            <div class="modal-header">
-
-                <h3>
-                    Registrar pago
-                </h3>
-
-                <button
-                    onclick="
-                        cerrarModal('modalPago')
-                    "
-                >
-                    ×
-                </button>
-
-            </div>
+</section>
 
 
-            <select id="empleadoPago">
 
-                <option value="">
-                    Seleccionar empleado
-                </option>
+<!-- ==========================================
+     PRESUPUESTOS
+========================================== -->
 
-            </select>
+<section
+    id="presupuestos"
+    class="seccion"
+>
+
+    <div class="seccion-header">
+
+        <div>
+
+            <p class="pequeno">
+                COTIZACIONES
+            </p>
+
+            <h2>
+                Presupuestos
+            </h2>
+
+        </div>
+
+        <button
+            class="boton-principal"
+            onclick="abrirPresupuesto()"
+        >
+            + Calcular
+        </button>
+
+    </div>
 
 
-            <input
-                id="fechaPago"
-                type="date"
-            >
+    <div class="panel">
+
+        <h3>
+            🧮 Calculadora de trabajos
+        </h3>
+
+        <p>
+            Calculá rápidamente cuánto
+            cobrar por cada trabajo.
+        </p>
+
+        <button
+            class="boton-principal boton-completo"
+            onclick="abrirPresupuesto()"
+        >
+            Calcular presupuesto
+        </button>
+
+    </div>
 
 
-            <input
-                id="montoPago"
-                type="number"
-                placeholder="Monto"
-            >
+    <div class="panel">
 
+        <div class="panel-titulo">
 
-            <input
-                id="conceptoPago"
-                type="text"
-                placeholder="Concepto"
-            >
+            <h3>
+                Presupuestos guardados
+            </h3>
 
+        </div>
 
-            <button
-                class="boton-principal boton-completo"
-                onclick="guardarPago()"
-            >
-
-                Guardar pago
-
-            </button>
-
+        <div
+            id="listaPresupuestos"
+            class="lista"
+        >
         </div>
 
     </div>
 
+</section>
+
+
+</main>
+
+
+
+<!-- ==========================================
+     MODAL EMPLEADO
+========================================== -->
+
+<div
+    id="modalEmpleado"
+    class="modal"
+>
+
+    <div class="modal-contenido">
+
+        <div class="modal-header">
+
+            <h3
+                id="tituloModalEmpleado"
+            >
+                Nuevo empleado
+            </h3>
+
+            <button
+                onclick="
+                    cerrarModal(
+                        'modalEmpleado'
+                    )
+                "
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <input
+            id="idEmpleadoEditar"
+            type="hidden"
+        >
+
+        <input
+            id="nombreEmpleado"
+            type="text"
+            placeholder="Nombre y apellido"
+        >
+
+        <input
+            id="puestoEmpleado"
+            type="text"
+            placeholder="Puesto / oficio"
+        >
+
+        <input
+            id="telefonoEmpleado"
+            type="tel"
+            placeholder="Teléfono"
+        >
+
+        <input
+            id="valorEmpleado"
+            type="number"
+            placeholder="Valor diario"
+        >
+
+
+        <div class="dias-trabajo">
+
+            <h4>
+                Días de trabajo
+            </h4>
+
+            <label>
+                <input
+                    type="checkbox"
+                    id="diaLunes"
+                >
+                Lunes
+            </label>
+
+            <label>
+                <input
+                    type="checkbox"
+                    id="diaMartes"
+                >
+                Martes
+            </label>
+
+            <label>
+                <input
+                    type="checkbox"
+                    id="diaMiércoles"
+                >
+                Miércoles
+            </label>
+
+            <label>
+                <input
+                    type="checkbox"
+                    id="diaJueves"
+                >
+                Jueves
+            </label>
+
+            <label>
+                <input
+                    type="checkbox"
+                    id="diaViernes"
+                >
+                Viernes
+            </label>
+
+            <label>
+                <input
+                    type="checkbox"
+                    id="diaSábado"
+                >
+                Sábado
+            </label>
+
+        </div>
+
+
+        <button
+            class="boton-principal boton-completo"
+            onclick="guardarEmpleado()"
+        >
+            Guardar empleado
+        </button>
+
+    </div>
 
 </div>
 
 
+
+<!-- ==========================================
+     MODAL OBRA
+========================================== -->
+
+<div
+    id="modalObra"
+    class="modal"
+>
+
+    <div class="modal-contenido">
+
+        <div class="modal-header">
+
+            <h3>
+                Nueva obra
+            </h3>
+
+            <button
+                onclick="
+                    cerrarModal(
+                        'modalObra'
+                    )
+                "
+            >
+                ×
+            </button>
+
+        </div>
+
+        <input
+            id="nombreObra"
+            type="text"
+            placeholder="Nombre de la obra"
+        >
+
+        <input
+            id="direccionObra"
+            type="text"
+            placeholder="Dirección"
+        >
+
+        <input
+            id="clienteObra"
+            type="text"
+            placeholder="Cliente"
+        >
+
+        <button
+            class="boton-principal boton-completo"
+            onclick="guardarObra()"
+        >
+            Guardar obra
+        </button>
+
+    </div>
+
+</div>
+
+
+
+<!-- ==========================================
+     MODAL HORAS
+========================================== -->
+
+<div
+    id="modalHoras"
+    class="modal"
+>
+
+    <div class="modal-contenido">
+
+        <div class="modal-header">
+
+            <h3>
+                Registrar horas
+            </h3>
+
+            <button
+                onclick="
+                    cerrarModal(
+                        'modalHoras'
+                    )
+                "
+            >
+                ×
+            </button>
+
+        </div>
+
+        <select id="empleadoHoras">
+
+            <option value="">
+                Seleccionar empleado
+            </option>
+
+        </select>
+
+        <select id="obraHoras">
+
+            <option value="">
+                Seleccionar obra
+            </option>
+
+        </select>
+
+        <input
+            id="fechaHoras"
+            type="date"
+        >
+
+        <input
+            id="cantidadHoras"
+            type="number"
+            placeholder="Cantidad de horas"
+            min="0"
+            step="0.5"
+        >
+
+        <button
+            class="boton-principal boton-completo"
+            onclick="guardarHoras()"
+        >
+            Registrar horas
+        </button>
+
+    </div>
+
+</div>
+
+
+
+<!-- ==========================================
+     MODAL PAGO
+========================================== -->
+
+<div
+    id="modalPago"
+    class="modal"
+>
+
+    <div class="modal-contenido">
+
+        <div class="modal-header">
+
+            <h3>
+                Registrar pago
+            </h3>
+
+            <button
+                onclick="
+                    cerrarModal(
+                        'modalPago'
+                    )
+                "
+            >
+                ×
+            </button>
+
+        </div>
+
+        <select id="empleadoPago">
+
+            <option value="">
+                Seleccionar empleado
+            </option>
+
+        </select>
+
+        <input
+            id="fechaPago"
+            type="date"
+        >
+
+        <input
+            id="montoPago"
+            type="number"
+            placeholder="Monto"
+        >
+
+        <input
+            id="conceptoPago"
+            type="text"
+            placeholder="Concepto"
+        >
+
+        <button
+            class="boton-principal boton-completo"
+            onclick="guardarPago()"
+        >
+            Guardar pago
+        </button>
+
+    </div>
+
+</div>
+
+
+
+<!-- ==========================================
+     MODAL PRESUPUESTO
+========================================== -->
+
+<div
+    id="modalPresupuesto"
+    class="modal"
+>
+
+    <div class="modal-contenido modal-presupuesto">
+
+        <div class="modal-header">
+
+            <div>
+
+                <p class="pequeno">
+                    NUEVA COTIZACIÓN
+                </p>
+
+                <h3>
+                    Calcular presupuesto
+                </h3>
+
+            </div>
+
+            <button
+                onclick="
+                    cerrarModal(
+                        'modalPresupuesto'
+                    )
+                "
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <input
+            id="nombreClientePresupuesto"
+            type="text"
+            placeholder="Cliente / obra"
+        >
+
+
+        <h4>
+            Agregar trabajo
+        </h4>
+
+
+        <input
+            id="nombreTrabajoPresupuesto"
+            type="text"
+            placeholder="Ej: Colocación de cerámica"
+        >
+
+
+        <div class="fila-presupuesto">
+
+            <input
+                id="unidadPresupuesto"
+                type="text"
+                value="m²"
+                placeholder="Unidad"
+            >
+
+            <input
+                id="precioPresupuesto"
+                type="number"
+                placeholder="Precio por unidad"
+                min="0"
+                step="0.01"
+            >
+
+            <input
+                id="cantidadPresupuesto"
+                type="number"
+                placeholder="Cantidad"
+                min="0"
+                step="0.01"
+            >
+
+        </div>
+
+
+        <button
+            class="boton-secundario boton-completo"
+            onclick="
+                agregarTrabajoPresupuesto()
+            "
+        >
+            + Agregar trabajo
+        </button>
+
+
+        <div
+            id="listaTrabajosPresupuesto"
+            class="lista-presupuesto"
+        >
+        </div>
+
+
+        <div class="total-presupuesto">
+
+            <span>
+                TOTAL A COBRAR
+            </span>
+
+            <strong
+                id="totalPresupuesto"
+            >
+                €0
+            </strong>
+
+        </div>
+
+
+        <button
+            class="boton-principal boton-completo"
+            onclick="
+                guardarPresupuesto()
+            "
+        >
+            💾 Guardar presupuesto
+        </button>
+
+    </div>
+
+</div>
+
+
+
 <script src="app.js"></script>
+
+</div>
 
 </body>
 
