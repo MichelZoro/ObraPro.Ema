@@ -17,13 +17,19 @@ let horas =
 let pagos =
     JSON.parse(localStorage.getItem("pagos")) || [];
 
+let presupuestos =
+    JSON.parse(localStorage.getItem("presupuestos")) || [];
+
 
 // ================= ACCESO =================
 
 let codigoAcceso =
     localStorage.getItem("codigoAcceso") || "";
 
-let appDesbloqueada = false;
+
+// ================= PRESUPUESTO TEMPORAL =================
+
+let trabajosPresupuesto = [];
 
 
 // ================= DÍAS =================
@@ -61,6 +67,11 @@ function guardarDatos() {
         "pagos",
         JSON.stringify(pagos)
     );
+
+    localStorage.setItem(
+        "presupuestos",
+        JSON.stringify(presupuestos)
+    );
 }
 
 
@@ -74,9 +85,6 @@ function verificarAcceso() {
     const app =
         document.getElementById("contenidoApp");
 
-    const input =
-        document.getElementById("codigoAcceso");
-
     if (!codigoAcceso) {
 
         document
@@ -87,18 +95,16 @@ function verificarAcceso() {
             .getElementById("ingresarCodigo")
             .style.display = "none";
 
-        return;
+    } else {
+
+        document
+            .getElementById("configurarCodigo")
+            .style.display = "none";
+
+        document
+            .getElementById("ingresarCodigo")
+            .style.display = "block";
     }
-
-    document
-        .getElementById("configurarCodigo")
-        .style.display = "none";
-
-    document
-        .getElementById("ingresarCodigo")
-        .style.display = "block";
-
-    input.value = "";
 
     pantalla.classList.add("mostrar");
     app.classList.add("oculto");
@@ -114,14 +120,18 @@ function crearCodigo() {
 
     if (nuevoCodigo.length < 4) {
 
-        alert("El código debe tener al menos 4 números.");
+        alert(
+            "El código debe tener al menos 4 números."
+        );
 
         return;
     }
 
     if (!/^[0-9]+$/.test(nuevoCodigo)) {
 
-        alert("El código debe contener solamente números.");
+        alert(
+            "El código debe contener solamente números."
+        );
 
         return;
     }
@@ -133,11 +143,9 @@ function crearCodigo() {
         codigoAcceso
     );
 
-    alert("Código creado correctamente.");
-
-    document
-        .getElementById("nuevoCodigo")
-        .value = "";
+    alert(
+        "Código creado correctamente."
+    );
 
     mostrarApp();
 }
@@ -161,13 +169,10 @@ function entrarApp() {
         .getElementById("errorAcceso")
         .textContent =
             "Código incorrecto. Intentá nuevamente.";
-
 }
 
 
 function mostrarApp() {
-
-    appDesbloqueada = true;
 
     document
         .getElementById("pantallaAcceso")
@@ -191,15 +196,9 @@ function mostrarApp() {
 
 function bloquearApp() {
 
-    appDesbloqueada = false;
-
     document
         .getElementById("contenidoApp")
         .classList.add("oculto");
-
-    document
-        .getElementById("pantallaAcceso")
-        .classList.add("mostrar");
 
     verificarAcceso();
 }
@@ -208,28 +207,38 @@ function bloquearApp() {
 function cambiarCodigo() {
 
     const actual =
-        prompt("Ingresá tu código actual:");
+        prompt(
+            "Ingresá el código actual:"
+        );
 
     if (actual !== codigoAcceso) {
 
-        alert("Código actual incorrecto.");
+        alert(
+            "Código actual incorrecto."
+        );
 
         return;
     }
 
     const nuevo =
-        prompt("Ingresá el nuevo código:");
+        prompt(
+            "Ingresá el nuevo código:"
+        );
 
     if (!nuevo || nuevo.length < 4) {
 
-        alert("El nuevo código debe tener al menos 4 números.");
+        alert(
+            "El nuevo código debe tener al menos 4 números."
+        );
 
         return;
     }
 
     if (!/^[0-9]+$/.test(nuevo)) {
 
-        alert("El código debe contener solamente números.");
+        alert(
+            "El código debe contener solamente números."
+        );
 
         return;
     }
@@ -241,7 +250,9 @@ function cambiarCodigo() {
         codigoAcceso
     );
 
-    alert("Código cambiado correctamente.");
+    alert(
+        "Código cambiado correctamente."
+    );
 }
 
 
@@ -265,20 +276,27 @@ function mostrarSeccion(nombre) {
 
         });
 
-
     document
         .getElementById(nombre)
         .classList.add("activa");
 
-
     document
         .getElementById("menu")
         .classList.remove("mostrar");
-
 }
 
 
 // ================= MODALES =================
+
+function cerrarModal(id) {
+
+    document
+        .getElementById(id)
+        .classList.remove("mostrar");
+}
+
+
+// ================= EMPLEADOS =================
 
 function abrirModalEmpleado(id = null) {
 
@@ -295,7 +313,9 @@ function abrirModalEmpleado(id = null) {
     if (id !== null) {
 
         const empleado =
-            empleados.find(e => e.id === id);
+            empleados.find(
+                e => e.id === id
+            );
 
         if (!empleado) return;
 
@@ -333,11 +353,13 @@ function abrirModalEmpleado(id = null) {
                     ? empleado.dias.includes(dia)
                     : false;
             }
+
         });
 
         document
             .getElementById("tituloModalEmpleado")
-            .textContent = "Editar empleado";
+            .textContent =
+                "Editar empleado";
     }
 
     document
@@ -345,52 +367,6 @@ function abrirModalEmpleado(id = null) {
         .classList.add("mostrar");
 }
 
-
-function abrirModalObra() {
-
-    document
-        .getElementById("modalObra")
-        .classList.add("mostrar");
-}
-
-
-function abrirModalHoras() {
-
-    cargarSelects();
-
-    document
-        .getElementById("fechaHoras")
-        .valueAsDate = new Date();
-
-    document
-        .getElementById("modalHoras")
-        .classList.add("mostrar");
-}
-
-
-function abrirModalPago() {
-
-    cargarSelects();
-
-    document
-        .getElementById("fechaPago")
-        .valueAsDate = new Date();
-
-    document
-        .getElementById("modalPago")
-        .classList.add("mostrar");
-}
-
-
-function cerrarModal(id) {
-
-    document
-        .getElementById(id)
-        .classList.remove("mostrar");
-}
-
-
-// ================= EMPLEADOS =================
 
 function guardarEmpleado() {
 
@@ -419,7 +395,6 @@ function guardarEmpleado() {
         .getElementById("valorEmpleado")
         .value;
 
-
     const dias = [];
 
     diasSemana.forEach(dia => {
@@ -429,30 +404,33 @@ function guardarEmpleado() {
                 "dia" + dia
             );
 
-        if (checkbox && checkbox.checked) {
+        if (
+            checkbox &&
+            checkbox.checked
+        ) {
 
             dias.push(dia);
-
         }
 
     });
 
-
     if (!nombre) {
 
-        alert("Ingresá el nombre del empleado.");
+        alert(
+            "Ingresá el nombre del empleado."
+        );
 
         return;
     }
-
 
     if (dias.length === 0) {
 
-        alert("Seleccioná al menos un día de trabajo.");
+        alert(
+            "Seleccioná al menos un día de trabajo."
+        );
 
         return;
     }
-
 
     if (id) {
 
@@ -496,9 +474,7 @@ function guardarEmpleado() {
             dias: dias
 
         });
-
     }
-
 
     guardarDatos();
 
@@ -507,21 +483,18 @@ function guardarEmpleado() {
     cerrarModal("modalEmpleado");
 
     renderizar();
-
 }
 
 
 function limpiarEmpleado() {
 
-    const campos = [
+    [
         "nombreEmpleado",
         "puestoEmpleado",
         "telefonoEmpleado",
         "valorEmpleado",
         "idEmpleadoEditar"
-    ];
-
-    campos.forEach(id => {
+    ].forEach(id => {
 
         const elemento =
             document.getElementById(id);
@@ -529,11 +502,8 @@ function limpiarEmpleado() {
         if (elemento) {
 
             elemento.value = "";
-
         }
-
     });
-
 
     diasSemana.forEach(dia => {
 
@@ -545,11 +515,9 @@ function limpiarEmpleado() {
         if (checkbox) {
 
             checkbox.checked = false;
-
         }
 
     });
-
 }
 
 
@@ -561,15 +529,19 @@ function editarEmpleado(id) {
 
 function eliminarEmpleado(id) {
 
-    if (!confirm("¿Eliminar este empleado?")) {
+    if (
+        !confirm(
+            "¿Eliminar este empleado?"
+        )
+    ) {
 
         return;
     }
 
-
     empleados =
-        empleados.filter(e => e.id !== id);
-
+        empleados.filter(
+            e => e.id !== id
+        );
 
     guardarDatos();
 
@@ -578,6 +550,14 @@ function eliminarEmpleado(id) {
 
 
 // ================= OBRAS =================
+
+function abrirModalObra() {
+
+    document
+        .getElementById("modalObra")
+        .classList.add("mostrar");
+}
+
 
 function guardarObra() {
 
@@ -596,14 +576,14 @@ function guardarObra() {
         .getElementById("clienteObra")
         .value.trim();
 
-
     if (!nombre) {
 
-        alert("Ingresá el nombre de la obra.");
+        alert(
+            "Ingresá el nombre de la obra."
+        );
 
         return;
     }
-
 
     obras.push({
 
@@ -618,22 +598,9 @@ function guardarObra() {
             cliente || "Sin cliente",
 
         activa: true
-
     });
 
-
     guardarDatos();
-
-    limpiarObra();
-
-    cerrarModal("modalObra");
-
-    renderizar();
-
-}
-
-
-function limpiarObra() {
 
     document
         .getElementById("nombreObra")
@@ -646,20 +613,28 @@ function limpiarObra() {
     document
         .getElementById("clienteObra")
         .value = "";
+
+    cerrarModal("modalObra");
+
+    renderizar();
 }
 
 
 function eliminarObra(id) {
 
-    if (!confirm("¿Eliminar esta obra?")) {
+    if (
+        !confirm(
+            "¿Eliminar esta obra?"
+        )
+    ) {
 
         return;
     }
 
-
     obras =
-        obras.filter(o => o.id !== id);
-
+        obras.filter(
+            o => o.id !== id
+        );
 
     guardarDatos();
 
@@ -668,6 +643,20 @@ function eliminarObra(id) {
 
 
 // ================= HORAS =================
+
+function abrirModalHoras() {
+
+    cargarSelects();
+
+    document
+        .getElementById("fechaHoras")
+        .valueAsDate = new Date();
+
+    document
+        .getElementById("modalHoras")
+        .classList.add("mostrar");
+}
+
 
 function guardarHoras() {
 
@@ -697,28 +686,36 @@ function guardarHoras() {
             .value
         );
 
+    if (
+        !empleadoId ||
+        !obraId ||
+        !fecha ||
+        !cantidad
+    ) {
 
-    if (!empleadoId || !obraId || !fecha || !cantidad) {
-
-        alert("Completá todos los datos.");
+        alert(
+            "Completá todos los datos."
+        );
 
         return;
     }
 
-
     const fechaObj =
-        new Date(fecha + "T12:00:00");
+        new Date(
+            fecha + "T12:00:00"
+        );
 
     const dia =
         fechaObj.toLocaleDateString(
             "es-ES",
-            { weekday: "long" }
+            {
+                weekday: "long"
+            }
         );
 
     const diaCapitalizado =
         dia.charAt(0).toUpperCase() +
         dia.slice(1);
-
 
     horas.push({
 
@@ -736,9 +733,7 @@ function guardarHoras() {
 
     });
 
-
     guardarDatos();
-
 
     document
         .getElementById("cantidadHoras")
@@ -747,11 +742,24 @@ function guardarHoras() {
     cerrarModal("modalHoras");
 
     renderizar();
-
 }
 
 
 // ================= PAGOS =================
+
+function abrirModalPago() {
+
+    cargarSelects();
+
+    document
+        .getElementById("fechaPago")
+        .valueAsDate = new Date();
+
+    document
+        .getElementById("modalPago")
+        .classList.add("mostrar");
+}
+
 
 function guardarPago() {
 
@@ -779,14 +787,18 @@ function guardarPago() {
         .getElementById("conceptoPago")
         .value.trim();
 
+    if (
+        !empleadoId ||
+        !fecha ||
+        !monto
+    ) {
 
-    if (!empleadoId || !fecha || !monto) {
-
-        alert("Completá los datos del pago.");
+        alert(
+            "Completá los datos del pago."
+        );
 
         return;
     }
-
 
     pagos.push({
 
@@ -803,9 +815,7 @@ function guardarPago() {
 
     });
 
-
     guardarDatos();
-
 
     document
         .getElementById("montoPago")
@@ -815,11 +825,9 @@ function guardarPago() {
         .getElementById("conceptoPago")
         .value = "";
 
-
     cerrarModal("modalPago");
 
     renderizar();
-
 }
 
 
@@ -828,14 +836,22 @@ function guardarPago() {
 function cargarSelects() {
 
     const empleadoHoras =
-        document.getElementById("empleadoHoras");
+        document.getElementById(
+            "empleadoHoras"
+        );
 
     const empleadoPago =
-        document.getElementById("empleadoPago");
+        document.getElementById(
+            "empleadoPago"
+        );
 
+    if (
+        !empleadoHoras ||
+        !empleadoPago
+    ) {
 
-    if (!empleadoHoras || !empleadoPago) return;
-
+        return;
+    }
 
     empleadoHoras.innerHTML =
         '<option value="">Seleccionar empleado</option>';
@@ -843,60 +859,66 @@ function cargarSelects() {
     empleadoPago.innerHTML =
         '<option value="">Seleccionar empleado</option>';
 
-
     empleados.forEach(empleado => {
 
         const option =
-            document.createElement("option");
+            document.createElement(
+                "option"
+            );
 
-        option.value = empleado.id;
+        option.value =
+            empleado.id;
 
         option.textContent =
             empleado.nombre;
-
 
         empleadoHoras.appendChild(
             option.cloneNode(true)
         );
 
-        empleadoPago.appendChild(option);
+        empleadoPago.appendChild(
+            option
+        );
 
     });
 
-
     const obraHoras =
-        document.getElementById("obraHoras");
-
+        document.getElementById(
+            "obraHoras"
+        );
 
     obraHoras.innerHTML =
         '<option value="">Seleccionar obra</option>';
 
-
     obras.forEach(obra => {
 
         const option =
-            document.createElement("option");
+            document.createElement(
+                "option"
+            );
 
-        option.value = obra.id;
+        option.value =
+            obra.id;
 
         option.textContent =
             obra.nombre;
 
-
-        obraHoras.appendChild(option);
+        obraHoras.appendChild(
+            option
+        );
 
     });
-
 }
 
 
-// ================= MOSTRAR EMPLEADOS =================
+// ================= EMPLEADOS =================
 
 function renderizarEmpleados() {
 
     const contenedor =
-        document.getElementById("listaEmpleados");
-
+        document.getElementById(
+            "listaEmpleados"
+        );
 
     if (empleados.length === 0) {
 
@@ -906,9 +928,7 @@ function renderizarEmpleados() {
         return;
     }
 
-
     contenedor.innerHTML = "";
-
 
     empleados.forEach(empleado => {
 
@@ -918,26 +938,34 @@ function renderizarEmpleados() {
             ? empleado.dias.join(" · ")
             : "Sin días asignados";
 
-
         const div =
-            document.createElement("div");
+            document.createElement(
+                "div"
+            );
 
         div.className = "item";
-
 
         div.innerHTML = `
 
             <div class="item-info">
 
-                <h3>👷 ${empleado.nombre}</h3>
+                <h3>
+                    👷 ${empleado.nombre}
+                </h3>
 
-                <p>${empleado.puesto}</p>
+                <p>
+                    ${empleado.puesto}
+                </p>
 
-                <p>📞 ${empleado.telefono}</p>
+                <p>
+                    📞 ${empleado.telefono}
+                </p>
 
                 <p>
                     💰 Valor diario:
-                    $${formatearNumero(empleado.valor)}
+                    €${formatearNumero(
+                        empleado.valor
+                    )}
                 </p>
 
                 <p>
@@ -950,39 +978,42 @@ function renderizarEmpleados() {
 
                 <button
                     class="editar"
-                    onclick="editarEmpleado(${empleado.id})">
-
+                    onclick="
+                        editarEmpleado(
+                            ${empleado.id}
+                        )
+                    "
+                >
                     ✏️ Editar
-
                 </button>
 
                 <button
                     class="eliminar"
-                    onclick="eliminarEmpleado(${empleado.id})">
-
+                    onclick="
+                        eliminarEmpleado(
+                            ${empleado.id}
+                        )
+                    "
+                >
                     🗑️
-
                 </button>
 
             </div>
-
         `;
 
-
         contenedor.appendChild(div);
-
     });
-
 }
 
 
-// ================= MOSTRAR OBRAS =================
+// ================= OBRAS =================
 
 function renderizarObras() {
 
     const contenedor =
-        document.getElementById("listaObras");
-
+        document.getElementById(
+            "listaObras"
+        );
 
     if (obras.length === 0) {
 
@@ -992,55 +1023,61 @@ function renderizarObras() {
         return;
     }
 
-
     contenedor.innerHTML = "";
-
 
     obras.forEach(obra => {
 
         const div =
-            document.createElement("div");
+            document.createElement(
+                "div"
+            );
 
         div.className = "item";
-
 
         div.innerHTML = `
 
             <div class="item-info">
 
-                <h3>🏗️ ${obra.nombre}</h3>
+                <h3>
+                    🏗️ ${obra.nombre}
+                </h3>
 
-                <p>📍 ${obra.direccion}</p>
+                <p>
+                    📍 ${obra.direccion}
+                </p>
 
-                <p>👤 Cliente: ${obra.cliente}</p>
+                <p>
+                    👤 Cliente:
+                    ${obra.cliente}
+                </p>
 
             </div>
 
             <button
                 class="eliminar"
-                onclick="eliminarObra(${obra.id})">
-
+                onclick="
+                    eliminarObra(
+                        ${obra.id}
+                    )
+                "
+            >
                 🗑️
-
             </button>
-
         `;
 
-
         contenedor.appendChild(div);
-
     });
-
 }
 
 
-// ================= MOSTRAR HORAS =================
+// ================= HORAS =================
 
 function renderizarHoras() {
 
     const contenedor =
-        document.getElementById("listaHoras");
-
+        document.getElementById(
+            "listaHoras"
+        );
 
     if (horas.length === 0) {
 
@@ -1050,9 +1087,7 @@ function renderizarHoras() {
         return;
     }
 
-
     contenedor.innerHTML = "";
-
 
     horas
         .slice()
@@ -1061,27 +1096,32 @@ function renderizarHoras() {
 
             const empleado =
                 empleados.find(
-                    e => e.id === registro.empleadoId
+                    e =>
+                        e.id ===
+                        registro.empleadoId
                 );
 
             const obra =
                 obras.find(
-                    o => o.id === registro.obraId
+                    o =>
+                        o.id ===
+                        registro.obraId
                 );
 
-
             const div =
-                document.createElement("div");
+                document.createElement(
+                    "div"
+                );
 
             div.className = "item";
-
 
             div.innerHTML = `
 
                 <div class="item-info">
 
                     <h3>
-                        ⏱️ ${registro.cantidad} horas
+                        ⏱️ ${registro.cantidad}
+                        horas
                     </h3>
 
                     <p>
@@ -1101,7 +1141,10 @@ function renderizarHoras() {
                     </p>
 
                     <p>
-                        📅 ${registro.dia || registro.fecha}
+                        📅 ${
+                            registro.dia ||
+                            registro.fecha
+                        }
                     </p>
 
                     <p>
@@ -1109,24 +1152,21 @@ function renderizarHoras() {
                     </p>
 
                 </div>
-
             `;
 
-
             contenedor.appendChild(div);
-
         });
-
 }
 
 
-// ================= MOSTRAR PAGOS =================
+// ================= PAGOS =================
 
 function renderizarPagos() {
 
     const contenedor =
-        document.getElementById("listaPagos");
-
+        document.getElementById(
+            "listaPagos"
+        );
 
     if (pagos.length === 0) {
 
@@ -1136,9 +1176,7 @@ function renderizarPagos() {
         return;
     }
 
-
     contenedor.innerHTML = "";
-
 
     pagos
         .slice()
@@ -1147,22 +1185,26 @@ function renderizarPagos() {
 
             const empleado =
                 empleados.find(
-                    e => e.id === pago.empleadoId
+                    e =>
+                        e.id ===
+                        pago.empleadoId
                 );
 
-
             const div =
-                document.createElement("div");
+                document.createElement(
+                    "div"
+                );
 
             div.className = "item";
-
 
             div.innerHTML = `
 
                 <div class="item-info">
 
                     <h3>
-                        💰 $${formatearNumero(pago.monto)}
+                        💰 €${formatearNumero(
+                            pago.monto
+                        )}
                     </h3>
 
                     <p>
@@ -1182,14 +1224,435 @@ function renderizarPagos() {
                     </p>
 
                 </div>
-
             `;
 
+            contenedor.appendChild(div);
+        });
+}
+
+
+// ==========================================
+// PRESUPUESTOS
+// ==========================================
+
+function abrirPresupuesto() {
+
+    trabajosPresupuesto = [];
+
+    document
+        .getElementById(
+            "nombreClientePresupuesto"
+        )
+        .value = "";
+
+    document
+        .getElementById(
+            "nombreTrabajoPresupuesto"
+        )
+        .value = "";
+
+    document
+        .getElementById(
+            "unidadPresupuesto"
+        )
+        .value = "m²";
+
+    document
+        .getElementById(
+            "precioPresupuesto"
+        )
+        .value = "";
+
+    document
+        .getElementById(
+            "cantidadPresupuesto"
+        )
+        .value = "";
+
+    renderizarTrabajosPresupuesto();
+
+    document
+        .getElementById(
+            "modalPresupuesto"
+        )
+        .classList.add("mostrar");
+}
+
+
+function agregarTrabajoPresupuesto() {
+
+    const nombre =
+        document
+        .getElementById(
+            "nombreTrabajoPresupuesto"
+        )
+        .value.trim();
+
+    const unidad =
+        document
+        .getElementById(
+            "unidadPresupuesto"
+        )
+        .value.trim();
+
+    const precio =
+        Number(
+            document
+            .getElementById(
+                "precioPresupuesto"
+            )
+            .value
+        );
+
+    const cantidad =
+        Number(
+            document
+            .getElementById(
+                "cantidadPresupuesto"
+            )
+            .value
+        );
+
+    if (!nombre) {
+
+        alert(
+            "Ingresá el trabajo."
+        );
+
+        return;
+    }
+
+    if (!unidad) {
+
+        alert(
+            "Ingresá la unidad."
+        );
+
+        return;
+    }
+
+    if (
+        !precio ||
+        precio <= 0
+    ) {
+
+        alert(
+            "Ingresá un precio válido."
+        );
+
+        return;
+    }
+
+    if (
+        !cantidad ||
+        cantidad <= 0
+    ) {
+
+        alert(
+            "Ingresá una cantidad válida."
+        );
+
+        return;
+    }
+
+    const total =
+        precio * cantidad;
+
+    trabajosPresupuesto.push({
+
+        id: Date.now(),
+
+        nombre,
+
+        unidad,
+
+        precio,
+
+        cantidad,
+
+        total
+
+    });
+
+    document
+        .getElementById(
+            "nombreTrabajoPresupuesto"
+        )
+        .value = "";
+
+    document
+        .getElementById(
+            "precioPresupuesto"
+        )
+        .value = "";
+
+    document
+        .getElementById(
+            "cantidadPresupuesto"
+        )
+        .value = "";
+
+    renderizarTrabajosPresupuesto();
+}
+
+
+function eliminarTrabajoPresupuesto(id) {
+
+    trabajosPresupuesto =
+        trabajosPresupuesto.filter(
+            trabajo =>
+                trabajo.id !== id
+        );
+
+    renderizarTrabajosPresupuesto();
+}
+
+
+function renderizarTrabajosPresupuesto() {
+
+    const contenedor =
+        document.getElementById(
+            "listaTrabajosPresupuesto"
+        );
+
+    const totalElemento =
+        document.getElementById(
+            "totalPresupuesto"
+        );
+
+    if (
+        trabajosPresupuesto.length === 0
+    ) {
+
+        contenedor.innerHTML = `
+            <div class="vacio">
+                Todavía no agregaste trabajos.
+            </div>
+        `;
+
+        totalElemento.textContent =
+            "€0";
+
+        return;
+    }
+
+    contenedor.innerHTML = "";
+
+    let totalGeneral = 0;
+
+    trabajosPresupuesto.forEach(
+        trabajo => {
+
+            totalGeneral +=
+                trabajo.total;
+
+            const div =
+                document.createElement(
+                    "div"
+                );
+
+            div.className =
+                "trabajo-presupuesto";
+
+            div.innerHTML = `
+
+                <div>
+
+                    <strong>
+                        ${trabajo.nombre}
+                    </strong>
+
+                    <small>
+                        ${
+                            trabajo.cantidad
+                        }
+                        ${
+                            trabajo.unidad
+                        }
+                        ×
+                        €${
+                            formatearNumero(
+                                trabajo.precio
+                            )
+                        }
+                    </small>
+
+                </div>
+
+                <div>
+
+                    <strong>
+                        €${
+                            formatearNumero(
+                                trabajo.total
+                            )
+                        }
+                    </strong>
+
+                    <button
+                        onclick="
+                            eliminarTrabajoPresupuesto(
+                                ${trabajo.id}
+                            )
+                        "
+                    >
+                        ✕
+                    </button>
+
+                </div>
+            `;
 
             contenedor.appendChild(div);
+        }
+    );
 
-        });
+    totalElemento.textContent =
+        "€" +
+        formatearNumero(
+            totalGeneral
+        );
+}
 
+
+function guardarPresupuesto() {
+
+    const cliente =
+        document
+        .getElementById(
+            "nombreClientePresupuesto"
+        )
+        .value.trim();
+
+    if (
+        trabajosPresupuesto.length === 0
+    ) {
+
+        alert(
+            "Agregá al menos un trabajo."
+        );
+
+        return;
+    }
+
+    let total = 0;
+
+    trabajosPresupuesto.forEach(
+        trabajo => {
+
+            total +=
+                trabajo.total;
+        }
+    );
+
+    presupuestos.push({
+
+        id: Date.now(),
+
+        cliente:
+            cliente || "Sin cliente",
+
+        fecha:
+            new Date()
+            .toLocaleDateString(
+                "es-ES"
+            ),
+
+        trabajos:
+            [...trabajosPresupuesto],
+
+        total
+
+    });
+
+    guardarDatos();
+
+    alert(
+        "Presupuesto guardado correctamente."
+    );
+
+    cerrarModal(
+        "modalPresupuesto"
+    );
+
+    renderizar();
+}
+
+
+function renderizarPresupuestos() {
+
+    const contenedor =
+        document.getElementById(
+            "listaPresupuestos"
+        );
+
+    if (!contenedor) return;
+
+    if (
+        presupuestos.length === 0
+    ) {
+
+        contenedor.innerHTML =
+            '<div class="vacio">Todavía no hay presupuestos guardados.</div>';
+
+        return;
+    }
+
+    contenedor.innerHTML = "";
+
+    presupuestos
+        .slice()
+        .reverse()
+        .forEach(
+            presupuesto => {
+
+                const div =
+                    document.createElement(
+                        "div"
+                    );
+
+                div.className =
+                    "item";
+
+                div.innerHTML = `
+
+                    <div class="item-info">
+
+                        <h3>
+                            🧾 ${
+                                presupuesto.cliente
+                            }
+                        </h3>
+
+                        <p>
+                            📅 ${
+                                presupuesto.fecha
+                            }
+                        </p>
+
+                        <p>
+                            🔨 ${
+                                presupuesto.trabajos.length
+                            }
+                            trabajos
+                        </p>
+
+                        <h3>
+                            💶 €${
+                                formatearNumero(
+                                    presupuesto.total
+                                )
+                            }
+                        </h3>
+
+                    </div>
+
+                `;
+
+                contenedor.appendChild(
+                    div
+                );
+            }
+        );
 }
 
 
@@ -1198,67 +1661,97 @@ function renderizarPagos() {
 function actualizarDashboard() {
 
     document
-        .getElementById("totalEmpleados")
+        .getElementById(
+            "totalEmpleados"
+        )
         .textContent =
             empleados.length;
 
-
     document
-        .getElementById("totalObras")
+        .getElementById(
+            "totalObras"
+        )
         .textContent =
             obras.length;
 
-
     document
-        .getElementById("totalHoras")
+        .getElementById(
+            "totalHoras"
+        )
         .textContent =
             horas.reduce(
                 (total, h) =>
-                    total + Number(h.cantidad),
+                    total +
+                    Number(
+                        h.cantidad
+                    ),
                 0
             );
 
-
     document
-        .getElementById("totalPagos")
+        .getElementById(
+            "totalPagos"
+        )
         .textContent =
             pagos.length;
-
 
     const totalDinero =
         pagos.reduce(
             (total, pago) =>
-                total + Number(pago.monto),
+                total +
+                Number(
+                    pago.monto
+                ),
             0
         );
 
-
     document
-        .getElementById("resumenInicio")
+        .getElementById(
+            "resumenInicio"
+        )
         .innerHTML = `
 
             <p>
-                👷 <strong>${empleados.length}</strong>
+                👷
+                <strong>
+                    ${empleados.length}
+                </strong>
                 empleados registrados.
             </p>
 
             <p>
-                🏗️ <strong>${obras.length}</strong>
+                🏗️
+                <strong>
+                    ${obras.length}
+                </strong>
                 obras registradas.
             </p>
 
             <p>
-                ⏱️ <strong>${horas.reduce(
-                    (t,h) => t + Number(h.cantidad),
-                    0
-                )}</strong>
+                ⏱️
+                <strong>
+                    ${
+                        horas.reduce(
+                            (t,h) =>
+                                t +
+                                Number(
+                                    h.cantidad
+                                ),
+                            0
+                        )
+                    }
+                </strong>
                 horas cargadas.
             </p>
 
             <p>
                 💰 Total de pagos:
                 <strong>
-                    $${formatearNumero(totalDinero)}
+                    €${
+                        formatearNumero(
+                            totalDinero
+                        )
+                    }
                 </strong>
             </p>
 
@@ -1270,8 +1763,11 @@ function actualizarDashboard() {
 
 function formatearNumero(numero) {
 
-    return Number(numero || 0)
-        .toLocaleString("es-AR");
+    return Number(
+        numero || 0
+    ).toLocaleString(
+        "es-ES"
+    );
 }
 
 
@@ -1287,10 +1783,11 @@ function renderizar() {
 
     renderizarPagos();
 
+    renderizarPresupuestos();
+
     actualizarDashboard();
 
     cargarSelects();
-
 }
 
 
@@ -1303,27 +1800,42 @@ document.addEventListener(
         if (!codigoAcceso) {
 
             document
-                .getElementById("pantallaAcceso")
-                .classList.add("mostrar");
+                .getElementById(
+                    "pantallaAcceso"
+                )
+                .classList.add(
+                    "mostrar"
+                );
 
             document
-                .getElementById("contenidoApp")
-                .classList.add("oculto");
+                .getElementById(
+                    "contenidoApp"
+                )
+                .classList.add(
+                    "oculto"
+                );
 
             verificarAcceso();
 
         } else {
 
             document
-                .getElementById("pantallaAcceso")
-                .classList.add("mostrar");
+                .getElementById(
+                    "pantallaAcceso"
+                )
+                .classList.add(
+                    "mostrar"
+                );
 
             document
-                .getElementById("contenidoApp")
-                .classList.add("oculto");
+                .getElementById(
+                    "contenidoApp"
+                )
+                .classList.add(
+                    "oculto"
+                );
 
             verificarAcceso();
-
         }
 
     }
