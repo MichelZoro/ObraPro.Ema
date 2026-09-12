@@ -1,6 +1,5 @@
-
 // ==========================================
-// GESTOR CONTRATISTA
+// GESTOR CONTRATISTA - EMANUEL
 // ==========================================
 
 
@@ -17,6 +16,26 @@ let horas =
 
 let pagos =
     JSON.parse(localStorage.getItem("pagos")) || [];
+
+
+// ================= ACCESO =================
+
+let codigoAcceso =
+    localStorage.getItem("codigoAcceso") || "";
+
+let appDesbloqueada = false;
+
+
+// ================= DÍAS =================
+
+const diasSemana = [
+    "Lunes",
+    "Martes",
+    "Miércoles",
+    "Jueves",
+    "Viernes",
+    "Sábado"
+];
 
 
 // ================= GUARDAR =================
@@ -42,6 +61,187 @@ function guardarDatos() {
         "pagos",
         JSON.stringify(pagos)
     );
+}
+
+
+// ================= ACCESO =================
+
+function verificarAcceso() {
+
+    const pantalla =
+        document.getElementById("pantallaAcceso");
+
+    const app =
+        document.getElementById("contenidoApp");
+
+    const input =
+        document.getElementById("codigoAcceso");
+
+    if (!codigoAcceso) {
+
+        document
+            .getElementById("configurarCodigo")
+            .style.display = "block";
+
+        document
+            .getElementById("ingresarCodigo")
+            .style.display = "none";
+
+        return;
+    }
+
+    document
+        .getElementById("configurarCodigo")
+        .style.display = "none";
+
+    document
+        .getElementById("ingresarCodigo")
+        .style.display = "block";
+
+    input.value = "";
+
+    pantalla.classList.add("mostrar");
+    app.classList.add("oculto");
+}
+
+
+function crearCodigo() {
+
+    const nuevoCodigo =
+        document
+        .getElementById("nuevoCodigo")
+        .value.trim();
+
+    if (nuevoCodigo.length < 4) {
+
+        alert("El código debe tener al menos 4 números.");
+
+        return;
+    }
+
+    if (!/^[0-9]+$/.test(nuevoCodigo)) {
+
+        alert("El código debe contener solamente números.");
+
+        return;
+    }
+
+    codigoAcceso = nuevoCodigo;
+
+    localStorage.setItem(
+        "codigoAcceso",
+        codigoAcceso
+    );
+
+    alert("Código creado correctamente.");
+
+    document
+        .getElementById("nuevoCodigo")
+        .value = "";
+
+    mostrarApp();
+}
+
+
+function entrarApp() {
+
+    const codigo =
+        document
+        .getElementById("codigoAcceso")
+        .value.trim();
+
+    if (codigo === codigoAcceso) {
+
+        mostrarApp();
+
+        return;
+    }
+
+    document
+        .getElementById("errorAcceso")
+        .textContent =
+            "Código incorrecto. Intentá nuevamente.";
+
+}
+
+
+function mostrarApp() {
+
+    appDesbloqueada = true;
+
+    document
+        .getElementById("pantallaAcceso")
+        .classList.remove("mostrar");
+
+    document
+        .getElementById("contenidoApp")
+        .classList.remove("oculto");
+
+    document
+        .getElementById("codigoAcceso")
+        .value = "";
+
+    document
+        .getElementById("errorAcceso")
+        .textContent = "";
+
+    renderizar();
+}
+
+
+function bloquearApp() {
+
+    appDesbloqueada = false;
+
+    document
+        .getElementById("contenidoApp")
+        .classList.add("oculto");
+
+    document
+        .getElementById("pantallaAcceso")
+        .classList.add("mostrar");
+
+    verificarAcceso();
+}
+
+
+function cambiarCodigo() {
+
+    const actual =
+        prompt("Ingresá tu código actual:");
+
+    if (actual !== codigoAcceso) {
+
+        alert("Código actual incorrecto.");
+
+        return;
+    }
+
+    const nuevo =
+        prompt("Ingresá el nuevo código:");
+
+    if (!nuevo || nuevo.length < 4) {
+
+        alert("El nuevo código debe tener al menos 4 números.");
+
+        return;
+    }
+
+    if (!/^[0-9]+$/.test(nuevo)) {
+
+        alert("El código debe contener solamente números.");
+
+        return;
+    }
+
+    codigoAcceso = nuevo;
+
+    localStorage.setItem(
+        "codigoAcceso",
+        codigoAcceso
+    );
+
+    alert("Código cambiado correctamente.");
 }
 
 
@@ -80,7 +280,65 @@ function mostrarSeccion(nombre) {
 
 // ================= MODALES =================
 
-function abrirModalEmpleado() {
+function abrirModalEmpleado(id = null) {
+
+    limpiarEmpleado();
+
+    document
+        .getElementById("idEmpleadoEditar")
+        .value = "";
+
+    document
+        .getElementById("tituloModalEmpleado")
+        .textContent = "Nuevo empleado";
+
+    if (id !== null) {
+
+        const empleado =
+            empleados.find(e => e.id === id);
+
+        if (!empleado) return;
+
+        document
+            .getElementById("idEmpleadoEditar")
+            .value = empleado.id;
+
+        document
+            .getElementById("nombreEmpleado")
+            .value = empleado.nombre;
+
+        document
+            .getElementById("puestoEmpleado")
+            .value = empleado.puesto;
+
+        document
+            .getElementById("telefonoEmpleado")
+            .value = empleado.telefono;
+
+        document
+            .getElementById("valorEmpleado")
+            .value = empleado.valor;
+
+        diasSemana.forEach(dia => {
+
+            const checkbox =
+                document.getElementById(
+                    "dia" + dia
+                );
+
+            if (checkbox) {
+
+                checkbox.checked =
+                    empleado.dias
+                    ? empleado.dias.includes(dia)
+                    : false;
+            }
+        });
+
+        document
+            .getElementById("tituloModalEmpleado")
+            .textContent = "Editar empleado";
+    }
 
     document
         .getElementById("modalEmpleado")
@@ -136,6 +394,11 @@ function cerrarModal(id) {
 
 function guardarEmpleado() {
 
+    const id =
+        document
+        .getElementById("idEmpleadoEditar")
+        .value;
+
     const nombre =
         document
         .getElementById("nombreEmpleado")
@@ -157,6 +420,24 @@ function guardarEmpleado() {
         .value;
 
 
+    const dias = [];
+
+    diasSemana.forEach(dia => {
+
+        const checkbox =
+            document.getElementById(
+                "dia" + dia
+            );
+
+        if (checkbox && checkbox.checked) {
+
+            dias.push(dia);
+
+        }
+
+    });
+
+
     if (!nombre) {
 
         alert("Ingresá el nombre del empleado.");
@@ -165,22 +446,59 @@ function guardarEmpleado() {
     }
 
 
-    const empleado = {
+    if (dias.length === 0) {
 
-        id: Date.now(),
+        alert("Seleccioná al menos un día de trabajo.");
 
-        nombre: nombre,
-
-        puesto: puesto || "Sin especificar",
-
-        telefono: telefono || "Sin teléfono",
-
-        valor: Number(valor) || 0
-
-    };
+        return;
+    }
 
 
-    empleados.push(empleado);
+    if (id) {
+
+        const empleado =
+            empleados.find(
+                e => e.id === Number(id)
+            );
+
+        if (!empleado) return;
+
+        empleado.nombre = nombre;
+
+        empleado.puesto =
+            puesto || "Sin especificar";
+
+        empleado.telefono =
+            telefono || "Sin teléfono";
+
+        empleado.valor =
+            Number(valor) || 0;
+
+        empleado.dias = dias;
+
+    } else {
+
+        empleados.push({
+
+            id: Date.now(),
+
+            nombre: nombre,
+
+            puesto:
+                puesto || "Sin especificar",
+
+            telefono:
+                telefono || "Sin teléfono",
+
+            valor:
+                Number(valor) || 0,
+
+            dias: dias
+
+        });
+
+    }
+
 
     guardarDatos();
 
@@ -195,27 +513,56 @@ function guardarEmpleado() {
 
 function limpiarEmpleado() {
 
-    document
-        .getElementById("nombreEmpleado")
-        .value = "";
+    const campos = [
+        "nombreEmpleado",
+        "puestoEmpleado",
+        "telefonoEmpleado",
+        "valorEmpleado",
+        "idEmpleadoEditar"
+    ];
 
-    document
-        .getElementById("puestoEmpleado")
-        .value = "";
+    campos.forEach(id => {
 
-    document
-        .getElementById("telefonoEmpleado")
-        .value = "";
+        const elemento =
+            document.getElementById(id);
 
-    document
-        .getElementById("valorEmpleado")
-        .value = "";
+        if (elemento) {
+
+            elemento.value = "";
+
+        }
+
+    });
+
+
+    diasSemana.forEach(dia => {
+
+        const checkbox =
+            document.getElementById(
+                "dia" + dia
+            );
+
+        if (checkbox) {
+
+            checkbox.checked = false;
+
+        }
+
+    });
+
+}
+
+
+function editarEmpleado(id) {
+
+    abrirModalEmpleado(id);
 }
 
 
 function eliminarEmpleado(id) {
 
     if (!confirm("¿Eliminar este empleado?")) {
+
         return;
     }
 
@@ -305,6 +652,7 @@ function limpiarObra() {
 function eliminarObra(id) {
 
     if (!confirm("¿Eliminar esta obra?")) {
+
         return;
     }
 
@@ -358,6 +706,20 @@ function guardarHoras() {
     }
 
 
+    const fechaObj =
+        new Date(fecha + "T12:00:00");
+
+    const dia =
+        fechaObj.toLocaleDateString(
+            "es-ES",
+            { weekday: "long" }
+        );
+
+    const diaCapitalizado =
+        dia.charAt(0).toUpperCase() +
+        dia.slice(1);
+
+
     horas.push({
 
         id: Date.now(),
@@ -368,12 +730,15 @@ function guardarHoras() {
 
         fecha,
 
+        dia: diaCapitalizado,
+
         cantidad
 
     });
 
 
     guardarDatos();
+
 
     document
         .getElementById("cantidadHoras")
@@ -469,6 +834,9 @@ function cargarSelects() {
         document.getElementById("empleadoPago");
 
 
+    if (!empleadoHoras || !empleadoPago) return;
+
+
     empleadoHoras.innerHTML =
         '<option value="">Seleccionar empleado</option>';
 
@@ -544,6 +912,13 @@ function renderizarEmpleados() {
 
     empleados.forEach(empleado => {
 
+        const dias =
+            empleado.dias &&
+            empleado.dias.length
+            ? empleado.dias.join(" · ")
+            : "Sin días asignados";
+
+
         const div =
             document.createElement("div");
 
@@ -565,15 +940,31 @@ function renderizarEmpleados() {
                     $${formatearNumero(empleado.valor)}
                 </p>
 
+                <p>
+                    📅 ${dias}
+                </p>
+
             </div>
 
-            <button
-                class="eliminar"
-                onclick="eliminarEmpleado(${empleado.id})">
+            <div class="acciones">
 
-                🗑️
+                <button
+                    class="editar"
+                    onclick="editarEmpleado(${empleado.id})">
 
-            </button>
+                    ✏️ Editar
+
+                </button>
+
+                <button
+                    class="eliminar"
+                    onclick="eliminarEmpleado(${empleado.id})">
+
+                    🗑️
+
+                </button>
+
+            </div>
 
         `;
 
@@ -710,7 +1101,11 @@ function renderizarHoras() {
                     </p>
 
                     <p>
-                        📅 ${registro.fecha}
+                        📅 ${registro.dia || registro.fecha}
+                    </p>
+
+                    <p>
+                        ${registro.fecha}
                     </p>
 
                 </div>
@@ -905,7 +1300,31 @@ document.addEventListener(
     "DOMContentLoaded",
     function() {
 
-        renderizar();
+        if (!codigoAcceso) {
+
+            document
+                .getElementById("pantallaAcceso")
+                .classList.add("mostrar");
+
+            document
+                .getElementById("contenidoApp")
+                .classList.add("oculto");
+
+            verificarAcceso();
+
+        } else {
+
+            document
+                .getElementById("pantallaAcceso")
+                .classList.add("mostrar");
+
+            document
+                .getElementById("contenidoApp")
+                .classList.add("oculto");
+
+            verificarAcceso();
+
+        }
 
     }
 );
