@@ -479,3 +479,157 @@ select:focus {
     }
 
 }
+/* ==========================================
+   NUEVAS FUNCIONES
+========================================== */
+
+.oculto {
+    display: none !important;
+}
+
+
+/* ================= ACCESO ================= */
+
+.pantalla-acceso {
+    display: none;
+    min-height: 100vh;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.pantalla-acceso.mostrar {
+    display: flex;
+}
+
+.acceso-contenido {
+    width: 100%;
+    max-width: 420px;
+    text-align: center;
+}
+
+.logo-acceso {
+    font-size: 52px;
+    margin-bottom: 10px;
+}
+
+.acceso-contenido h1 {
+    margin: 5px 0;
+}
+
+.acceso-contenido input {
+    width: 100%;
+    box-sizing: border-box;
+    margin: 8px 0;
+}
+
+.error {
+    color: #c0392b;
+    margin-top: 10px;
+}
+
+
+/* ================= ACCIONES ================= */
+
+.acciones {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.editar {
+    border: none;
+    border-radius: 10px;
+    padding: 9px 12px;
+    cursor: pointer;
+}
+
+
+/* ================= DÍAS ================= */
+
+.dias-trabajo {
+    margin: 10px 0;
+}
+
+.dias-trabajo h4 {
+    margin-bottom: 8px;
+}
+
+.dias-trabajo label {
+    display: inline-block;
+    margin: 5px 8px 5px 0;
+}
+
+
+/* ================= PRESUPUESTOS ================= */
+
+.modal-presupuesto {
+    max-width: 520px;
+}
+
+.fila-presupuesto {
+    display: grid;
+    grid-template-columns: 0.8fr 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
+.lista-presupuesto {
+    margin-top: 15px;
+}
+
+.trabajo-presupuesto {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    padding: 14px 0;
+    border-bottom: 1px solid #ddd;
+}
+
+.trabajo-presupuesto div:first-child {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.trabajo-presupuesto small {
+    opacity: 0.7;
+}
+
+.trabajo-presupuesto button {
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    font-size: 18px;
+}
+
+.total-presupuesto {
+    margin: 20px 0;
+    padding: 18px;
+    border-radius: 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.total-presupuesto span {
+    font-weight: 600;
+}
+
+.total-presupuesto strong {
+    font-size: 28px;
+}
+
+
+@media (max-width: 600px) {
+
+    .fila-presupuesto {
+        grid-template-columns: 1fr;
+    }
+
+    .trabajo-presupuesto {
+        align-items: flex-start;
+    }
+
+}
