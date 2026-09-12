@@ -1,54 +1,234 @@
-
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
     <title>Gestor Contratista</title>
 
-    <link rel="stylesheet" href="style.css">
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
 </head>
+
 
 <body>
 
-    <!-- ENCABEZADO -->
+
+<!-- ================= ACCESO ================= -->
+
+<div
+    id="pantallaAcceso"
+    class="pantalla-acceso"
+>
+
+    <div class="acceso-contenido">
+
+        <div class="logo-acceso">
+            🏗️
+        </div>
+
+        <p class="pequeno">
+            GESTOR CONTRATISTA
+        </p>
+
+        <h1>
+            Gestor
+        </h1>
+
+        <p>
+            Control de obras,
+            empleados y pagos.
+        </p>
+
+
+        <!-- CREAR CÓDIGO -->
+
+        <div
+            id="configurarCodigo"
+            style="display:none;"
+        >
+
+            <h3>
+                Crear código de acceso
+            </h3>
+
+            <p>
+                Este código será utilizado
+                por Emanuel para entrar
+                a la aplicación.
+            </p>
+
+            <input
+                id="nuevoCodigo"
+                type="password"
+                inputmode="numeric"
+                placeholder="Crear código"
+            >
+
+            <button
+                class="boton-principal boton-completo"
+                onclick="crearCodigo()"
+            >
+
+                Crear código
+
+            </button>
+
+        </div>
+
+
+        <!-- INGRESAR -->
+
+        <div
+            id="ingresarCodigo"
+            style="display:none;"
+        >
+
+            <h3>
+                Bienvenido
+            </h3>
+
+            <p>
+                Ingresá tu código para continuar.
+            </p>
+
+            <input
+                id="codigoAcceso"
+                type="password"
+                inputmode="numeric"
+                placeholder="Código de acceso"
+                onkeydown="
+                    if(event.key === 'Enter')
+                    entrarApp()
+                "
+            >
+
+            <button
+                class="boton-principal boton-completo"
+                onclick="entrarApp()"
+            >
+
+                Entrar
+
+            </button>
+
+            <p
+                id="errorAcceso"
+                class="error"
+            ></p>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- ================= CONTENIDO APP ================= -->
+
+<div
+    id="contenidoApp"
+    class="oculto"
+>
+
+
+    <!-- ================= ENCABEZADO ================= -->
+
     <header class="topbar">
 
         <div>
-            <h1>Gestor</h1>
-            <span>Control de obras</span>
+
+            <h1>
+                Gestor
+            </h1>
+
+            <span>
+                Control de obras
+            </span>
+
         </div>
 
-        <button class="menu-btn" onclick="toggleMenu()">☰</button>
+
+        <button
+            class="menu-btn"
+            onclick="toggleMenu()"
+        >
+
+            ☰
+
+        </button>
 
     </header>
 
 
-    <!-- MENÚ -->
-    <nav id="menu" class="menu">
 
-        <button onclick="mostrarSeccion('inicio')">
+    <!-- ================= MENÚ ================= -->
+
+    <nav
+        id="menu"
+        class="menu"
+    >
+
+        <button
+            onclick="mostrarSeccion('inicio')"
+        >
             🏠 Inicio
         </button>
 
-        <button onclick="mostrarSeccion('empleados')">
+
+        <button
+            onclick="mostrarSeccion('empleados')"
+        >
             👷 Empleados
         </button>
 
-        <button onclick="mostrarSeccion('obras')">
+
+        <button
+            onclick="mostrarSeccion('obras')"
+        >
             🏗️ Obras
         </button>
 
-        <button onclick="mostrarSeccion('horas')">
+
+        <button
+            onclick="mostrarSeccion('horas')"
+        >
             ⏱️ Horas
         </button>
 
-        <button onclick="mostrarSeccion('pagos')">
+
+        <button
+            onclick="mostrarSeccion('pagos')"
+        >
             💰 Pagos
         </button>
 
+
+        <button
+            onclick="cambiarCodigo()"
+        >
+            🔐 Cambiar código
+        </button>
+
+
+        <button
+            onclick="bloquearApp()"
+        >
+            🚪 Salir
+        </button>
+
     </nav>
+
 
 
     <main>
@@ -56,17 +236,24 @@
 
         <!-- ================= INICIO ================= -->
 
-        <section id="inicio" class="seccion activa">
+        <section
+            id="inicio"
+            class="seccion activa"
+        >
 
             <div class="bienvenida">
 
-                <p class="pequeno">PANEL PRINCIPAL</p>
+                <p class="pequeno">
+                    PANEL PRINCIPAL
+                </p>
 
-                <h2>Buen día 👋</h2>
+                <h2>
+                    ¡Hola, Emanuel! 👋
+                </h2>
 
                 <p>
-                    Controlá tus empleados, obras y pagos
-                    desde un solo lugar.
+                    Bienvenido nuevamente.
+                    ¿Qué vamos a organizar hoy?
                 </p>
 
             </div>
@@ -74,63 +261,112 @@
 
             <div class="tarjetas">
 
+
                 <div class="tarjeta">
 
-                    <span class="icono">👷</span>
+                    <span class="icono">
+                        👷
+                    </span>
 
                     <div>
-                        <small>Empleados</small>
-                        <strong id="totalEmpleados">0</strong>
+
+                        <small>
+                            Empleados
+                        </small>
+
+                        <strong id="totalEmpleados">
+                            0
+                        </strong>
+
                     </div>
 
                 </div>
 
 
+
                 <div class="tarjeta">
 
-                    <span class="icono">🏗️</span>
+                    <span class="icono">
+                        🏗️
+                    </span>
 
                     <div>
-                        <small>Obras activas</small>
-                        <strong id="totalObras">0</strong>
+
+                        <small>
+                            Obras activas
+                        </small>
+
+                        <strong id="totalObras">
+                            0
+                        </strong>
+
                     </div>
 
                 </div>
 
 
+
                 <div class="tarjeta">
 
-                    <span class="icono">⏱️</span>
+                    <span class="icono">
+                        ⏱️
+                    </span>
 
                     <div>
-                        <small>Horas registradas</small>
-                        <strong id="totalHoras">0</strong>
+
+                        <small>
+                            Horas registradas
+                        </small>
+
+                        <strong id="totalHoras">
+                            0
+                        </strong>
+
                     </div>
 
                 </div>
 
 
+
                 <div class="tarjeta">
 
-                    <span class="icono">💰</span>
+                    <span class="icono">
+                        💰
+                    </span>
 
                     <div>
-                        <small>Pagos registrados</small>
-                        <strong id="totalPagos">0</strong>
+
+                        <small>
+                            Pagos registrados
+                        </small>
+
+                        <strong id="totalPagos">
+                            0
+                        </strong>
+
                     </div>
 
                 </div>
+
 
             </div>
+
 
 
             <div class="panel">
 
                 <div class="panel-titulo">
-                    <h3>Resumen</h3>
+
+                    <h3>
+                        Resumen
+                    </h3>
+
                 </div>
 
-                <div id="resumenInicio" class="resumen">
+                <div
+                    id="resumenInicio"
+                    class="resumen"
+                >
                     Todavía no hay información cargada.
                 </div>
 
@@ -142,24 +378,40 @@
 
         <!-- ================= EMPLEADOS ================= -->
 
-        <section id="empleados" class="seccion">
+        <section
+            id="empleados"
+            class="seccion"
+        >
 
             <div class="seccion-header">
 
                 <div>
-                    <p class="pequeno">PERSONAL</p>
-                    <h2>Empleados</h2>
+
+                    <p class="pequeno">
+                        PERSONAL
+                    </p>
+
+                    <h2>
+                        Empleados
+                    </h2>
+
                 </div>
 
-                <button class="boton-principal"
-                        onclick="abrirModalEmpleado()">
+
+                <button
+                    class="boton-principal"
+                    onclick="abrirModalEmpleado()"
+                >
                     + Agregar
                 </button>
 
             </div>
 
 
-            <div id="listaEmpleados" class="lista">
+            <div
+                id="listaEmpleados"
+                class="lista"
+            >
             </div>
 
         </section>
@@ -168,24 +420,40 @@
 
         <!-- ================= OBRAS ================= -->
 
-        <section id="obras" class="seccion">
+        <section
+            id="obras"
+            class="seccion"
+        >
 
             <div class="seccion-header">
 
                 <div>
-                    <p class="pequeno">PROYECTOS</p>
-                    <h2>Obras</h2>
+
+                    <p class="pequeno">
+                        PROYECTOS
+                    </p>
+
+                    <h2>
+                        Obras
+                    </h2>
+
                 </div>
 
-                <button class="boton-principal"
-                        onclick="abrirModalObra()">
+
+                <button
+                    class="boton-principal"
+                    onclick="abrirModalObra()"
+                >
                     + Agregar
                 </button>
 
             </div>
 
 
-            <div id="listaObras" class="lista">
+            <div
+                id="listaObras"
+                class="lista"
+            >
             </div>
 
         </section>
@@ -194,24 +462,40 @@
 
         <!-- ================= HORAS ================= -->
 
-        <section id="horas" class="seccion">
+        <section
+            id="horas"
+            class="seccion"
+        >
 
             <div class="seccion-header">
 
                 <div>
-                    <p class="pequeno">CONTROL</p>
-                    <h2>Horas trabajadas</h2>
+
+                    <p class="pequeno">
+                        CONTROL
+                    </p>
+
+                    <h2>
+                        Horas trabajadas
+                    </h2>
+
                 </div>
 
-                <button class="boton-principal"
-                        onclick="abrirModalHoras()">
+
+                <button
+                    class="boton-principal"
+                    onclick="abrirModalHoras()"
+                >
                     + Registrar
                 </button>
 
             </div>
 
 
-            <div id="listaHoras" class="lista">
+            <div
+                id="listaHoras"
+                class="lista"
+            >
             </div>
 
         </section>
@@ -220,27 +504,44 @@
 
         <!-- ================= PAGOS ================= -->
 
-        <section id="pagos" class="seccion">
+        <section
+            id="pagos"
+            class="seccion"
+        >
 
             <div class="seccion-header">
 
                 <div>
-                    <p class="pequeno">ADMINISTRACIÓN</p>
-                    <h2>Pagos</h2>
+
+                    <p class="pequeno">
+                        ADMINISTRACIÓN
+                    </p>
+
+                    <h2>
+                        Pagos
+                    </h2>
+
                 </div>
 
-                <button class="boton-principal"
-                        onclick="abrirModalPago()">
+
+                <button
+                    class="boton-principal"
+                    onclick="abrirModalPago()"
+                >
                     + Registrar
                 </button>
 
             </div>
 
 
-            <div id="listaPagos" class="lista">
+            <div
+                id="listaPagos"
+                class="lista"
+            >
             </div>
 
         </section>
+
 
     </main>
 
@@ -248,19 +549,34 @@
 
     <!-- ================= MODAL EMPLEADO ================= -->
 
-    <div id="modalEmpleado" class="modal">
+    <div
+        id="modalEmpleado"
+        class="modal"
+    >
 
         <div class="modal-contenido">
 
             <div class="modal-header">
 
-                <h3>Nuevo empleado</h3>
+                <h3 id="tituloModalEmpleado">
+                    Nuevo empleado
+                </h3>
 
-                <button onclick="cerrarModal('modalEmpleado')">
+                <button
+                    onclick="
+                        cerrarModal('modalEmpleado')
+                    "
+                >
                     ×
                 </button>
 
             </div>
+
+
+            <input
+                id="idEmpleadoEditar"
+                type="hidden"
+            >
 
 
             <input
@@ -291,9 +607,72 @@
             >
 
 
+            <div class="dias-trabajo">
+
+                <h4>
+                    Días de trabajo
+                </h4>
+
+                <label>
+                    <input
+                        type="checkbox"
+                        id="diaLunes"
+                    >
+                    Lunes
+                </label>
+
+
+                <label>
+                    <input
+                        type="checkbox"
+                        id="diaMartes"
+                    >
+                    Martes
+                </label>
+
+
+                <label>
+                    <input
+                        type="checkbox"
+                        id="diaMiércoles"
+                    >
+                    Miércoles
+                </label>
+
+
+                <label>
+                    <input
+                        type="checkbox"
+                        id="diaJueves"
+                    >
+                    Jueves
+                </label>
+
+
+                <label>
+                    <input
+                        type="checkbox"
+                        id="diaViernes"
+                    >
+                    Viernes
+                </label>
+
+
+                <label>
+                    <input
+                        type="checkbox"
+                        id="diaSábado"
+                    >
+                    Sábado
+                </label>
+
+            </div>
+
+
             <button
                 class="boton-principal boton-completo"
-                onclick="guardarEmpleado()">
+                onclick="guardarEmpleado()"
+            >
 
                 Guardar empleado
 
@@ -307,15 +686,24 @@
 
     <!-- ================= MODAL OBRA ================= -->
 
-    <div id="modalObra" class="modal">
+    <div
+        id="modalObra"
+        class="modal"
+    >
 
         <div class="modal-contenido">
 
             <div class="modal-header">
 
-                <h3>Nueva obra</h3>
+                <h3>
+                    Nueva obra
+                </h3>
 
-                <button onclick="cerrarModal('modalObra')">
+                <button
+                    onclick="
+                        cerrarModal('modalObra')
+                    "
+                >
                     ×
                 </button>
 
@@ -345,7 +733,8 @@
 
             <button
                 class="boton-principal boton-completo"
-                onclick="guardarObra()">
+                onclick="guardarObra()"
+            >
 
                 Guardar obra
 
@@ -359,15 +748,24 @@
 
     <!-- ================= MODAL HORAS ================= -->
 
-    <div id="modalHoras" class="modal">
+    <div
+        id="modalHoras"
+        class="modal"
+    >
 
         <div class="modal-contenido">
 
             <div class="modal-header">
 
-                <h3>Registrar horas</h3>
+                <h3>
+                    Registrar horas
+                </h3>
 
-                <button onclick="cerrarModal('modalHoras')">
+                <button
+                    onclick="
+                        cerrarModal('modalHoras')
+                    "
+                >
                     ×
                 </button>
 
@@ -375,16 +773,20 @@
 
 
             <select id="empleadoHoras">
+
                 <option value="">
                     Seleccionar empleado
                 </option>
+
             </select>
 
 
             <select id="obraHoras">
+
                 <option value="">
                     Seleccionar obra
                 </option>
+
             </select>
 
 
@@ -405,7 +807,8 @@
 
             <button
                 class="boton-principal boton-completo"
-                onclick="guardarHoras()">
+                onclick="guardarHoras()"
+            >
 
                 Registrar horas
 
@@ -419,15 +822,24 @@
 
     <!-- ================= MODAL PAGO ================= -->
 
-    <div id="modalPago" class="modal">
+    <div
+        id="modalPago"
+        class="modal"
+    >
 
         <div class="modal-contenido">
 
             <div class="modal-header">
 
-                <h3>Registrar pago</h3>
+                <h3>
+                    Registrar pago
+                </h3>
 
-                <button onclick="cerrarModal('modalPago')">
+                <button
+                    onclick="
+                        cerrarModal('modalPago')
+                    "
+                >
                     ×
                 </button>
 
@@ -465,7 +877,8 @@
 
             <button
                 class="boton-principal boton-completo"
-                onclick="guardarPago()">
+                onclick="guardarPago()"
+            >
 
                 Guardar pago
 
@@ -476,8 +889,11 @@
     </div>
 
 
+</div>
 
-    <script src="app.js"></script>
+
+<script src="app.js"></script>
 
 </body>
+
 </html>
